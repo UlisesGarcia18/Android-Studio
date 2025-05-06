@@ -1,0 +1,23 @@
+cd "$env:ANDROID_HOME\cmdline-tools\latest\bin"
+
+# Aceptar licencias automáticamente
+yes | .\sdkmanager.bat --licenses
+
+# Instalar herramientas esenciales
+.\sdkmanager.bat `
+  "platform-tools" `
+  "platforms;android-34" `
+  "build-tools;34.0.0" `
+  "cmdline-tools;latest" `
+  "emulator" `
+  "system-images;android-34;google_apis;x86_64" `
+  "extras;google;m2repository" `
+  "extras;android;m2repository" `
+  "patcher;v4"
+
+# Crear un dispositivo virtual (emulador)
+cd "$env:ANDROID_HOME\emulator"
+.\avdmanager.bat create avd -n Pixel_34 -k "system-images;android-34;google_apis;x86_64" --device "pixel"
+
+# (Opcional) Ejecutar el emulador después de crearlo
+Start-Process .\emulator.exe -ArgumentList "@Pixel_34"
